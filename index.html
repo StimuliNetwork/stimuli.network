@@ -200,10 +200,21 @@
         .carousel-container {
             overflow: hidden;
             border-radius: 0.75rem;
-            /* border: 1px solid #374151; Removed border */
+            /* border: 1px solid #374151; Removed */
             background-color: #1f2937;
             position: relative;
-            height: 500px;
+            height: 350px; /* Default mobile height */
+            transition: height 0.3s ease-in-out; /* Smooth height transition */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .carousel-container {
+                height: 450px;
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .carousel-container {
+                height: 500px;
+            }
         }
         .carousel-slide {
             position: absolute;
@@ -253,7 +264,6 @@
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200 font-normal content-hidden">
-    <!-- ... Rest of your HTML body ... -->
     <div id="disclaimer-modal">
         <div class="disclaimer-modal-content bg-gray-800 p-8 rounded-xl shadow-2xl text-center max-w-md w-11/12 border border-gray-700">
             <h3 id="disclaimer-title" class="text-2xl font-semibold text-gray-100 mb-4">Disclaimer</h3>
@@ -345,7 +355,7 @@
         </section>
 
         <section id="projects" class="py-20 lg:py-28 bg-gray-800 border-t border-b border-gray-700"> <div class="container mx-auto px-6">
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-100 mb-16 text-center">Our Projects</h2> <div class="carousel-container-wrapper">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-100 mb-8 lg:mb-12 text-center">Our Projects</h2> <div class="carousel-container-wrapper">
                     <div class="carousel-container">
                         </div>
                     <div class="carousel-dots">
