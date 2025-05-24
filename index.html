@@ -200,7 +200,7 @@
         .carousel-container {
             overflow: hidden;
             border-radius: 0.75rem;
-            border: 1px solid #374151;
+            /* border: 1px solid #374151; Removed border */
             background-color: #1f2937;
             position: relative;
             height: 500px;
@@ -213,7 +213,6 @@
             height: 100%;
             opacity: 0;
             visibility: hidden;
-            /* Increased transition duration for opacity and adjusted visibility delay */
             transition: opacity 1.5s ease-in-out, visibility 0s linear 1.5s;
             display: flex;
             justify-content: center;
@@ -223,7 +222,7 @@
         .carousel-slide.active {
             opacity: 1;
             visibility: visible;
-            transition-delay: 0s; /* Ensures the incoming slide starts its transition immediately */
+            transition-delay: 0s;
             z-index: 10;
         }
         .carousel-slide img {
@@ -1542,6 +1541,16 @@
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === this.state.currentCarouselSlide);
                 });
+
+                if (slides.length > 1) {
+                    const nextSlideIndex = (this.state.currentCarouselSlide + 1) % slides.length;
+                    const nextSlide = slides[nextSlideIndex];
+                    const nextImageElement = nextSlide.querySelector('img');
+                    if (nextImageElement && nextImageElement.src) {
+                        const preloader = new Image();
+                        preloader.src = nextImageElement.src;
+                    }
+                }
 
                 if (slides.length > 1) {
                     this.state.carouselIntervalId = setInterval(() => this.nextCarouselSlide(), 10000);
