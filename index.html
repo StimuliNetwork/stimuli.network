@@ -458,7 +458,8 @@
                 speechSynthesis: window.speechSynthesis,
                 currentUtterance: null,
                 speakingElementId: null,
-                currentCarouselSlide: 0
+                currentCarouselSlide: 0,
+                carouselIntervalId: null // Added for carousel auto-play
             },
 
             async fetchFromServer(endpoint, body) {
@@ -1474,7 +1475,7 @@
                 this.config.PROJECT_IMAGES.forEach((image, index) => {
                     const slide = document.createElement('div');
                     slide.classList.add('carousel-slide');
-                    if (index === 0) slide.classList.add('active');
+                    // No need to add 'active' here, showCarouselSlide will handle it
 
                     const img = document.createElement('img');
                     img.src = image.src;
@@ -1489,12 +1490,27 @@
 
                     const dot = document.createElement('span');
                     dot.classList.add('carousel-dot');
-                    if (index === 0) dot.classList.add('active');
+                    // No need to add 'active' here
                     dot.setAttribute('data-slide-to', index);
                     dot.addEventListener('click', () => this.showCarouselSlide(index));
                     dotsContainer.appendChild(dot);
                 });
+                // Show the initial slide and start auto-play if applicable
                 this.showCarouselSlide(this.state.currentCarouselSlide);
+            },
+
+            nextCarouselSlide() {
+                const slides = document.querySelectorAll('#projects .carousel-slide');
+                if (!slides || slides.length <= 1) { // Only advance if there's more than one slide
+                    if(this.state.carouselIntervalId) clearInterval(this.state.carouselIntervalId);
+                    this.state.carouselIntervalId = null;
+                    return;
+                }
+                let nextIndex = this.state.currentCarouselSlide + 1;
+                if (nextIndex >= slides.length) {
+                    nextIndex = 0;
+                }
+                this.showCarouselSlide(nextIndex);
             },
 
             showCarouselSlide(index) {
@@ -1503,6 +1519,13 @@
 
                 if (slides.length === 0) return;
 
+                // Clear previous interval
+                if (this.state.carouselIntervalId) {
+                    clearInterval(this.state.carouselIntervalId);
+                    this.state.carouselIntervalId = null;
+                }
+
+                // Update current slide index
                 if (index >= slides.length) this.state.currentCarouselSlide = 0;
                 else if (index < 0) this.state.currentCarouselSlide = slides.length - 1;
                 else this.state.currentCarouselSlide = index;
@@ -1513,6 +1536,11 @@
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === this.state.currentCarouselSlide);
                 });
+
+                // Start new interval if there are multiple slides
+                if (slides.length > 1) {
+                    this.state.carouselIntervalId = setInterval(() => this.nextCarouselSlide(), 10000); // 10 seconds
+                }
             },
 
             init() {
@@ -1545,7 +1573,7 @@
                     this.initializeIntroParagraphSplitting();
                     this.initializeMenuAndScroll();
                     this.setCopyrightYear();
-                    this.initializeCarousel();
+                    this.initializeCarousel(); // This will also start the auto-play
                     const postsLoadingMessage = document.getElementById('posts-loading-message');
                     if (!this.state.postGenerationTriggered) {
                         if (this.state.heroSubheadlinesList && this.state.heroSubheadlinesList.length > 0) {
