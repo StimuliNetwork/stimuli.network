@@ -261,6 +261,20 @@
         .carousel-dot.active, .carousel-dot:hover {
             background-color: #22d3ee;
         }
+        /* Social Icons Styling */
+        .social-icons {
+            display: flex; /* Use flexbox for alignment */
+            justify-content: center; /* Center icons */
+            align-items: center; /* Vertically align icons */
+        }
+        .social-icons a {
+            color: #9ca3af; /* Tailwind gray-400 */
+            margin: 0 0.75rem; /* Spacing between icons */
+            font-size: 1.5rem; /* Icon size */
+        }
+        .social-icons a:hover {
+            color: #22d3ee; /* Tailwind cyan-400 for hover */
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200 font-normal content-hidden">
@@ -395,10 +409,24 @@
             <div class="mb-10">
                 <h4 class="text-2xl font-semibold text-white mb-3">Get in Touch</h4>
                 <p class="text-base text-gray-400 mb-4 max-w-md mx-auto leading-relaxed">Have questions or want to partner or volunteer?<br>We'd love to hear from you.</p>
-                <p class="text-lg mb-2">
-                    <a href="mailto:Contact@Stimuli.Network" class="text-cyan-400 hover:text-cyan-300 hover:underline">Contact@Stimuli.Network</a>
-                </p>
-            </div>
+                <div class="social-icons mt-6">
+                     <a href="mailto:Contact@Stimuli.Network" aria-label="Email Contact">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://github.com/StimuliNetwork" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://youtube.com/@Stimuli.Network" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="https://linkedin.com/a/stimuli-network" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://x.com/StimuliNetwork" target="_blank" rel="noopener noreferrer" aria-label="X (formerly Twitter)">
+                        <i class="fab fa-xing"></i>
+                    </a>
+                </div>
+                </div>
             <div class="border-t border-gray-700 pt-10 text-center text-sm text-gray-400">
                 <p> <span id="current-year"></span> Stimuli Network. All rights reserved.</p>
             </div>
@@ -1605,7 +1633,7 @@
                             setTimeout(() => { this.generateSinglePost(true); }, 500);
                         } else {
                             if (postsLoadingMessage) { postsLoadingMessage.textContent = 'No themes available for community updates at the moment.'; }
-                             setTimeout(() => { this.generateSinglePost(true); }, 500);
+                             setTimeout(() => { this.generateSinglePost(true); }, 500); // Still call to handle empty state
                         }
                     }
                 }, { once: true });
